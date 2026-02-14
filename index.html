@@ -124,18 +124,12 @@
         font-size: 15px;
         text-align: left;
     }
-    .effects{
-        /* padding: 20px 0px 20px 0px; */
-        /* background-color: rgba(255, 255, 255, 0.06); */
-		/* border-radius: 5px; */
-
-    }
+    
 	.effects ul {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		font-size: 18px;
-		/* background-color: #ffffff; */
 		border-radius: 15px;
 
 	}
@@ -143,20 +137,14 @@
 	.effects ul li {
 		padding: 10px 10px 10px 20px;
 		border-radius: 10px;
-
 		background-color: rgba(255, 255, 255, 0.06);    
-		/* color: rgb(0, 0, 0); */
 		margin-top: 10px;
-        /* border-bottom: 1px solid rgb(255, 255, 255,.3); */
 	}
 
     .effects ul li.effect-item{
         display:flex;
         align-items:center;
         gap:10px;
-        /* padding:10px 10px 10px 15px; */
-
-        /* background-color: #00ff80; */
     }
 
     .effect-ico{
@@ -164,18 +152,14 @@
         height:25px;
         flex:0 0 25px;
         object-fit:contain;
-        /* padding-right:5px; */
-
         background-size: contain;
         background-position:center;
         background-repeat:no-repeat;
-        /* filter: brightness(10); */
     }
 
     .effect-text{
         min-width:0;
     }
-
 
     .stones-grid {
         display: grid;
@@ -196,26 +180,19 @@
    
     .stone-wind   { 
         background-color: #3cc3ec; 
-        /* border:1px solid #3cc3ec; */
     }
 	.stone-fire   { 
         background-color: #f47231; 
-        /* border:1px solid #f47231; */
     }
 	.stone-green  { 
         background-color: #1ed269; 
-        /* border:1px solid #1ed269; */
     }
 	.stone-earth  { 
         background-color: #92655e; 
-        /* border:1px solid #92655e; */
     }
 	.stone-rainbow{ 
         background-color: #c35cf3; 
-        /* border:1px solid #c35cf3; */
     }
-
-
 
     .sidebar{
         position: sticky;
@@ -225,7 +202,7 @@
         display: flex;
         flex-direction: column;
 
-        overflow: hidden;   /* важно: скролла тут НЕ должно быть */
+        overflow: hidden;
     }
 
     .toolbar{
@@ -237,8 +214,8 @@
 
     #tags{
         flex: 1;
-        min-height: 0;      /* критично */
-        overflow-y: auto;   /* скролл ТОЛЬКО тут */
+        min-height: 0;    
+        overflow-y: auto; 
         overflow-x: hidden;
         padding-right: 14px;   
         scrollbar-gutter: stable;
@@ -342,20 +319,15 @@
 	}
 
     .effect-value{
-        /* font-weight: 700; */
         font-size: 18px;
         font-family: "Pearl", sans-serif;
     }
     .effect-value.positive{ color: #00ff80; }
     .effect-value.negative{ color: #f92f5e; }
 
-
-
 	.content{ 
         min-width: 0; 
     }
-	
-	
         
 	.tag-section{
 		border-radius: 18px;
@@ -369,7 +341,6 @@
 		user-select: none;
 		font-family: "Pearl", sans-serif;
 		font-size: 22px;
-		/* color: white; */
 		list-style: none;
 		display: flex;
 		align-items: center;
@@ -396,8 +367,6 @@
 	}
 
     details[data-group="red"] {
-        /* background-color: #ff603c; */
-        /* background: linear-gradient(#ff603c 1%, #ff603c00 10%); */
         color:#ff6d12;
     }
     details[data-group="blue"] {  
@@ -887,7 +856,7 @@
                 if (url)
                     icon.style.backgroundImage = `url(${url})`;
                 else
-                    icon.style.backgroundColor = "#666"; // placeholder
+                    icon.style.backgroundColor = "#666";
 
                 const text = document.createElement("span");
                 text.textContent = TAG_LABELS[tag] || tag;
@@ -946,14 +915,12 @@
         const hasTags = state.selected.size > 0;
 
         for (const it of state.items) {
-            const qOk = matchQuery(it, state.query); // поиск
-            const tOk = matchTags(it);               // теги
+            const qOk = matchQuery(it, state.query); 
+            const tOk = matchTags(it);               
 
-            // если включены и поиск, и теги — объединяем через OR
             if (hasQ && hasTags) {
             if (!(qOk || tOk)) continue;
             } else {
-            // иначе обычный AND-режим
             if (!qOk) continue;
             if (!tOk) continue;
             }
@@ -981,16 +948,13 @@
             const card = document.createElement("div");
             card.className = "card";
 
-            /* ---------- Заголовок (вне flex логики) ---------- */
             const title = document.createElement("h3");
             const name = (it.name || "(без названия)").trim();
             title.textContent = name;
 
-            /* ---------- Wrapper под flex ---------- */
             const body = document.createElement("div");
             body.className = "card-body";
 
-            /* ---------- Верхняя часть (эффекты) ---------- */
             const effects = document.createElement("div");
             effects.className = "effects";
 
@@ -1000,11 +964,11 @@
 
             for (let i = 0; i < effectsArr.length; i++) {
                 const e = effectsArr[i];
-                const tagKey = tagsArr[i]; // <-- соответствие по индексу
+                const tagKey = tagsArr[i];
 
                 const li = document.createElement("li");
                 li.className = "effect-item";
-                if (tagKey) li.dataset.tag = tagKey; // удобно для CSS/отладки
+                if (tagKey) li.dataset.tag = tagKey;
 
                 const ico = document.createElement("img");
                 ico.className = "effect-ico";
@@ -1015,7 +979,6 @@
                 const txt = document.createElement("span");
                 txt.className = "effect-text";
 
-                // подсветка чисел (+/- и %), с разным цветом для + и -
                 txt.innerHTML = String(e).replace(
                 /([+-]\d+(?:[.,]\d+)?%?)/g,
                 (m) => m[0] === "-"
@@ -1032,7 +995,6 @@
 
             effects.appendChild(effList);
 
-            /* ---------- Нижняя часть (камни) ---------- */
 
             const stonesGrid = document.createElement("div");
             stonesGrid.className = "stones-grid";
@@ -1044,10 +1006,8 @@
                 stone.className = "stone-item " + colorClass;
 
                 const parts = s.split(" ");
-                const first = parts.shift();        // первое слово
-                const rest = parts.join(" ");       // остальное
-
-                /* ---------- первое слово (обычное) ---------- */
+                const first = parts.shift();       
+                const rest = parts.join(" ");       
                 let text = first;
 
                 if (text === "Разноцветный")
@@ -1057,7 +1017,6 @@
                 spanFirst.innerHTML = text;
                 stone.appendChild(spanFirst);
 
-                /* ---------- остальное (жирное) ---------- */
                 let second = rest;
 
                 if (second === "Преобразование")
@@ -1078,13 +1037,10 @@
             }
 
 
-            /* ---------- Сборка ---------- */
             body.appendChild(effects);
             body.appendChild(stonesGrid);
-
             card.appendChild(title);
             card.appendChild(body);
-
             $cards.appendChild(card);
         }
     }
