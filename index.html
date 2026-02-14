@@ -10,824 +10,1173 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100&display=swap" rel="stylesheet">
 
 <style>
-  @font-face {
-    font-family: "Pearl";
-    src: url("./fonts/Pearl.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
+	@font-face {
+		font-family: "Pearl";
+		src: url("./fonts/Pearl.woff2") format("woff2");
+		font-weight: normal;
+		font-style: normal;
+	}
+    @keyframes jitterSoft {
+		0%   { transform: translateX(0px) rotate(0deg); }
+		25%  { transform: translateX(-0.6px) rotate(-0.6deg); }
+		50%  { transform: translateX(0.6px) rotate(0.3deg); }
+		75%  { transform: translateX(-0.4px) rotate(-0.3deg); }
+		100% { transform: translateX(0px) rotate(0deg); }
+	}
+    @media (max-width: 980px){
+		.layout{ grid-template-columns: 1fr; }
+		.sidebar{ position: relative; top: auto; }
+	}
+	
+	body {
+		font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+		margin: 16px;
+		background: linear-gradient(to bottom, rgb(12, 23, 45) 5%, rgb(7, 32, 36) 50%);
+		background-attachment: fixed;
+	}
 
-  body {
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    margin: 16px;
-    background: linear-gradient(to bottom, rgb(12, 23, 45) 5%, rgb(7, 32, 36) 50%);
-    background-attachment: fixed;
-  }
+    #title{
+		font-family: 'Pearl', Arial, Helvetica, sans-serif;
+		font-size: 70px;
+		margin: 0;
+		margin-top: 40px;
+		margin-bottom: 40px;
+		color: rgb(255, 255, 255);
+		text-align: center;
+		text-transform: uppercase;
+		-webkit-text-stroke: 2px rgb(255, 255, 255);
+	}
 
-  .row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 18px;
-    justify-content: center;
-  }
+	.TITLE {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 30px;
+	}
 
-  .toolbar{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+	.TITLE::before {
+		transform: scale(2);
+		content: "";
+		width: 200px;
+		height: 12px;
+		background-image: url("./line.png");
+		filter: brightness(5);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
 
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 20px;
-    margin-bottom: 10px;
-  }
+	.TITLE::after {
+		transform: scale(2) scaleX(-1);
+		filter: brightness(5);
+		background-image: url("./line.png");
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		content: "";
+		width: 200px;
+		height: 12px;
+	}
 
-  .d1 { grid-area: 1 / 1 / 2 / 2; }
-  .d2 { grid-area: 1 / 2 / 2 / 3; }
-  .d3 { grid-area: 1 / 3 / 2 / 4; }
-  .d4 { grid-area: 1 / 4 / 2 / 5; }
-  .d5 { grid-area: 2 / 1 / 3 / 2; }
-  .d6 { grid-area: 2 / 2 / 3 / 3; }
-  .d7 { grid-area: 2 / 3 / 3 / 4; }
-  .d8 { grid-area: 2 / 4 / 3 / 5; }
+	.row {
+		display: flex;
+		gap: 12px;
+		flex-wrap: wrap;
+		align-items: center;
+		margin-bottom: 18px;
+		justify-content: center;
+	}
 
-  .d1, .d2, .d3, .d4 {
-    margin: 0;
-    font-family: 'Pearl';
-    font-size: 30px;
-    text-align: center;
-  }
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 10px;
+		margin-top: 0;
+    }
 
-  .d5,.d6,.d7,.d8{
-    background-image: url(./line2.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 50%;
-    height: 10px;
-    filter: invert();
-  }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap:20px;
+        justify-content:space-between;
+    }
 
-  .tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+	.card {
+        margin:4px;
+        padding: 20px;    
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: rgba(255, 255, 255, 0.06);
 
-  /* карточки */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 0;
-  }
+        border-radius: 30px;
+        color:white;
+    }
 
-  .card {
-    margin: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: linear-gradient(30deg, rgb(21, 38, 71), rgb(9, 54, 60));
-    background-position: top right;
-    height: 530px;
-    border-radius: 30px;
-    color: white;
-  }
+	.card > h3 {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding-left: 10px;
+        font-family: "Pearl", sans-serif;
+        font-weight: 100;
+        font-size: 15px;
+        text-align: left;
+    }
+    .effects{
+        /* padding: 20px 0px 20px 0px; */
+        /* background-color: rgba(255, 255, 255, 0.06); */
+		/* border-radius: 5px; */
 
-  .card1 {
-    height: 50%;
-    padding: 25px 20px 20px 20px;
-  }
+    }
+	.effects ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: 18px;
+		/* background-color: #ffffff; */
+		border-radius: 15px;
 
-  .card1 h3 {
-    margin: 0 0 40px 0;
-    font-size: 20px;
-    font-family: "Pearl", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 100;
-    font-style: normal;
-    text-align: center;
-    line-height: 1;
-  }
+	}
 
-  .card1 ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 16px;
-  }
+	.effects ul li {
+		padding: 10px 10px 10px 20px;
+		border-radius: 10px;
 
-  .card1 ul li {
-    padding: 5px 10px 5px 20px;
-    background-color: #ffffff;
-    color: black;
-    margin-top: 10px;
-    border-radius: 5px;
-  }
+		background-color: rgba(255, 255, 255, 0.06);    
+		/* color: rgb(0, 0, 0); */
+		margin-top: 10px;
+        /* border-bottom: 1px solid rgb(255, 255, 255,.3); */
+	}
 
-  .card2 { border-radius: 22px; }
+    .effects ul li.effect-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        /* padding:10px 10px 10px 15px; */
 
-  .stones-grid {
-    display: grid;
-    grid-template-columns: repeat(2,50%);
-    gap: 10px;
-    padding: 0px 30px 20px 20px;
-    hyphens: auto;
-  }
+        /* background-color: #00ff80; */
+    }
 
-  .stone-item {
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 6px 8px;
-    font-size: 18px;
-    line-height: 1.2;
-    height: 65px;
-  }
+    .effect-ico{
+        width:25px;
+        height:25px;
+        flex:0 0 25px;
+        object-fit:contain;
+        /* padding-right:5px; */
 
-  .stone-wind   { border:2px solid #4fc3f7; }
-  .stone-fire   { border:2px solid #d84315; }
-  .stone-green  { border:2px solid #558b2f; }
-  .stone-earth  { border:2px solid #f9a825; }
-  .stone-rainbow{ border:2px solid #f869fff7; }
+        background-size: contain;
+        background-position:center;
+        background-repeat:no-repeat;
+        /* filter: brightness(10); */
+    }
 
-  input[type="search"] {
-    padding: 8px 10px;
-    border: 1px solid #aaa;
-    border-radius: 50px;
-    min-width: 240px;
-  }
-
-  button.tag {
-    border: 1px solid #aaaaaa00;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: #ffffff;
-    cursor: pointer;
-    user-select: none;
-    text-align: left;
-  }
-
-  button.tag:hover{
-    transform: scale(1.05);
-    transition: transform 0.1s ease-in-out;
-    filter:drop-shadow();
-  }
-
-  button.tag.red   { color:white; background:#fe6a0d; }
-  button.tag.blue  { color:white; background:#6889ec; }
-  button.tag.green { background:#b7ff58; }
-  button.tag.white { background:#dcdcdc; }
-
-  button.tag.active {
-    background: #000000;
-    color: #fff;
-    border-color: #11111100;
-    filter: drop-shadow(0 0px 15px rgba(58, 238, 250, 0.639));
-  }
-
-  #reset{
-    color: rgb(27, 27, 27);
-    background-color: #ffffff;
-    border-radius: 50px;
-    padding: 8px 10px;
-    border: 1px solid #ffffff;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  #title{
-    font-family: 'Pearl', Arial, Helvetica, sans-serif;
-    font-size: 70px;
-    margin: 0;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    text-transform: uppercase;
-    -webkit-text-stroke: 2px rgb(255, 255, 255);
-  }
-
-  .TITLE {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-  }
-
-  .TITLE::before {
-    transform: scale(2);
-    content: "";
-    width: 200px;
-    height: 12px;
-    background-image: url("./line.png");
-    filter: brightness(5);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .TITLE::after {
-    transform: scale(2) scaleX(-1);
-    filter: brightness(5);
-    background-image: url("./line.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    content: "";
-    width: 200px;
-    height: 12px;
-  }
-
-  @keyframes jitterSoft {
-    0%   { transform: translateX(0px) rotate(0deg); }
-    25%  { transform: translateX(-0.6px) rotate(-0.6deg); }
-    50%  { transform: translateX(0.6px) rotate(0.3deg); }
-    75%  { transform: translateX(-0.4px) rotate(-0.3deg); }
-    100% { transform: translateX(0px) rotate(0deg); }
-  }
-
-  button.tag.active {
-    animation: jitterSoft 0.8s ease-in-out infinite;
-  }
+    .effect-text{
+        min-width:0;
+    }
 
 
-  .layout{
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 20px;
-    align-items: start;
-  }
-
- .sidebar{
-  position: sticky;
-  top: 16px;
-  align-self: start;
-
-  max-height: calc(100vh - 32px);
-  overflow: hidden; 
-}
-
-  .content{ min-width: 0; }
-
-  @media (max-width: 980px){
-    .layout{ grid-template-columns: 1fr; }
-    .sidebar{ position: relative; top: auto; }
-  }
-
-  #tags{
-  flex: 1;
-  min-height: 0;          
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 6px;     
-}
-
-  .tag-section{
-    border-radius: 18px;
-    background: rgba(255,255,255,0.06);
-    padding: 10px;
-    width: 100%;
-  }
-
-  .tag-section summary{
-    cursor: pointer;
-    user-select: none;
-    font-family: "Pearl", sans-serif;
-    font-size: 22px;
-    color: white;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-radius: 14px;
-  }
-
-  .tag-section summary::-webkit-details-marker { display: none; }
-
-  .tag-section summary:after{
-    content: "▾";
-    opacity: .85;
-    transform: translateY(-1px);
-  }
-
-  .tag-section[open] summary:after{ content: "▴"; }
-
-  .tag-buttons{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 8px 6px 6px 6px;
-  }
-
- 
-.sidebar{
-  position: sticky;
-  top: 16px;
-  align-self: start;
-
-  max-height: calc(100vh - 32px); 
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.sidebar::-webkit-scrollbar { width: 10px; }
-.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 999px; }
-.sidebar::-webkit-scrollbar-track { background: rgba(0,0,0,.15); border-radius: 999px; }
+    .stones-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+	.stone-item {
+        flex: 1 0 100%;            
+        min-width: 0;          
+        padding: 6px 10px;
+        font-size: 18px;
+        line-height: 1.2;
+        border-radius: 5px;
+        color:rgb(255, 255, 255);
+    }
+   
+    .stone-wind   { 
+        background-color: #3cc3ec; 
+        /* border:1px solid #3cc3ec; */
+    }
+	.stone-fire   { 
+        background-color: #f47231; 
+        /* border:1px solid #f47231; */
+    }
+	.stone-green  { 
+        background-color: #1ed269; 
+        /* border:1px solid #1ed269; */
+    }
+	.stone-earth  { 
+        background-color: #92655e; 
+        /* border:1px solid #92655e; */
+    }
+	.stone-rainbow{ 
+        background-color: #c35cf3; 
+        /* border:1px solid #c35cf3; */
+    }
 
 
-.toolbar{
-  /* было: padding: 20px; ... */
-  padding: 20px;
-}
+
+    .sidebar{
+        position: sticky;
+        top: 16px;
+        max-height: calc(100vh - 32px);
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;   /* важно: скролла тут НЕ должно быть */
+    }
+
+    .toolbar{
+        flex: 1;
+        min-height: 0; 
+        display: flex;
+        flex-direction: column;
+    }
+
+    #tags{
+        flex: 1;
+        min-height: 0;      /* критично */
+        overflow-y: auto;   /* скролл ТОЛЬКО тут */
+        overflow-x: hidden;
+        padding-right: 14px;   
+        scrollbar-gutter: stable;
+    }
+
+	.tags {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+    
+	input[type="search"] {
+		padding: 8px 10px;
+		border: 1px solid #aaa;
+		border-radius: 50px;
+		min-width: 240px;
+	}
+    #reset{
+		color: rgb(27, 27, 27);
+		background-color: #ffffff;
+		border-radius: 50px;
+		padding: 8px 10px;
+		border: 1px solid #ffffff;
+		cursor: pointer;
+		user-select: none;
+	}
+
+    .tag-icon {
+        width:25px;
+        height:25px;
+
+        flex:0 0 25px;
+
+        background-size: contain;
+        background-repeat:no-repeat;
+        background-position:center;
+
+        display:inline-block;
+    }
+
+	button.tag {
+        display:flex;
+        align-items:center;
+        gap:6px;
+
+        font-size: 15px;
+
+		border: 1px solid #aaaaaa00;
+		padding: 6px 10px;
+		border-radius: 50px;
+		background-color: rgba(255, 255, 255,0.06);
+		cursor: pointer;
+		user-select: none;
+		text-align: left;
+        color:rgb(255, 255, 255); 
+		transition: 
+            background-color 0.15s ease, 
+            color 0.15s ease;
+	}
+	button.tag:hover{
+        background-color: #000000;
+        color: #ffffff;
+	}
+    
+	button.tag.red   { 
+		background-color: rgba(255, 255, 255,0.06);
+    }
+	button.tag.blue  { 
+		background-color: rgba(255, 255, 255,0.06);
+    }
+	button.tag.green { 
+		background-color: rgba(255, 255, 255,0.06);
+    }
+	button.tag.white { 
+		background-color: rgba(255, 255, 255,0.06);
+    }
+    button.tag.red:hover,
+    button.tag.blue:hover,
+    button.tag.green:hover,
+    button.tag.white:hover {
+        background:#000;
+        color:#fff;
+    }
+
+	button.tag.active {
+		background: #000000;
+		color: #fff;
+		border-color: #11111100;
+		filter: drop-shadow(0 0px 15px rgba(58, 238, 250, 0.639));
+	}
+
+	button.tag.active {
+		animation: jitterSoft 0.8s ease-in-out infinite;
+	}
+
+	.layout{
+		display: grid;
+		grid-template-columns: 360px 1fr;
+		gap: 20px;
+		align-items: start;
+	}
+
+    .effect-value{
+        /* font-weight: 700; */
+        font-size: 18px;
+        font-family: "Pearl", sans-serif;
+    }
+    .effect-value.positive{ color: #00ff80; }
+    .effect-value.negative{ color: #f92f5e; }
+
+
+
+	.content{ 
+        min-width: 0; 
+    }
+	
+	
+        
+	.tag-section{
+		border-radius: 18px;
+		background: rgba(255,255,255,0.06);
+		padding: 5px;
+		width: 100%;
+	}
+
+	.tag-section summary{
+		cursor: pointer;
+		user-select: none;
+		font-family: "Pearl", sans-serif;
+		font-size: 22px;
+		/* color: white; */
+		list-style: none;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 8px 10px;
+		border-radius: 14px;
+	}
+
+	.tag-section summary::-webkit-details-marker { display: none; }
+
+	.tag-section summary:after{
+		content: "▾";
+		opacity: .85;
+		transform: translateY(-1px);
+	}
+
+	.tag-section[open] summary:after{ content: "▴"; }
+
+	.tag-buttons{
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		padding: 8px 6px 6px 6px;
+	}
+
+    details[data-group="red"] {
+        /* background-color: #ff603c; */
+        /* background: linear-gradient(#ff603c 1%, #ff603c00 10%); */
+        color:#ff6d12;
+    }
+    details[data-group="blue"] {  
+        color:#3cc3ec;
+    }
+    details[data-group="green"] {  
+        color:#1ed269;
+    }
+    details[data-group="white"] {  
+        color:white;
+    }
+
+
+    .sidebar::-webkit-scrollbar { width: 10px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 999px; }
+    .sidebar::-webkit-scrollbar-track { background: rgba(0,0,0,.15); border-radius: 999px; }
+
 
 </style>
 </head>
 
 <body>
-  <p id="title" class="TITLE">Светящиeся камни</p>
+	<p id="title" class="TITLE">Светящиeся камни</p>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="toolbar">
-        <div class="row">
-          <input id="q" type="search" placeholder="Поиск по названию/эффектам/камням..." />
-          <button id="reset">Сброс</button>
-        </div>
+	<div class="layout">
+		<aside class="sidebar">
+			<div class="toolbar">
+				<div class="row">
+					<input id="q" type="search" placeholder="Поиск по названию/эффектам/камням..." />
+					<button id="reset">Сброс</button>
+				</div>
 
-        <div class="category-grid">
-          
-          <div class="d5"></div>
-          <div class="d6"></div>
-          <div class="d7"></div>
-          <div class="d8"></div>
-        </div>
+				<div id="tags" class="tags"></div>
+			</div>
+		</aside>
 
-        <div id="tags" class="tags"></div>
-      </div>
-    </aside>
-
-    <main class="content">
-      <div id="cards" class="cards"></div>
-    </main>
-  </div>
+		<main class="content">
+			<div id="cards" class="cards"></div>
+		</main>
+	</div>
 
 <script>
 (() => {
-  const state = {
-    items: [],
-    selected: new Set(),
-    mode: "or",
-    query: "",
-    openGroups: new Set(["red","blue","green","white"])
-  };
+	const state = {
+		items: [],
+		selected: new Set(),
+		mode: "or",
+		query: "",
+		openGroups: new Set(["red","blue","green","white"])
+	};
 
-  const TAG_LABELS = {
-    exp: "Боевой опыт",
-    pexp: "Опыт навыков",
-    atc_monster: "Доп. урон монстрам",
-    atc_human: "Доп. урон (люди)",
-    atc_ain: "Доп. урон (аины)",
-    atc_kama: "Доп. урон монстрам Камасильвии",
-    atc_idan: "Доп. атака по монстрам Идании",
-    atc_decrease_monster: "Урон от монстров",
-    damage_decrease_monster: "Снижение урона от монстров",
-    hp_max: "Макс. HP",
-    atc_ground: "Урон от атаки по низу",
-    atc_crit: "Урон крит. удара",
-    atc_back: "Урон от атак в спину",
-    def_all: "Все сопротивление",
-    atc_all: "Вся атака",
-    luck: "Шанс получения трофеев",
-    speed: "Скорость передвижения",
-    mass: "Макс. грузоподъемность",
-    cloth: "Уменьшение износа снаряжения",
-    karma: "Восстановление кармы",
-    know: "Шанс получения знаний",
-    know_high: "Шанс получения знаний выс. уровня",
-    fall_damage: "Урон от падения",
-    all_accu: "Вся меткость",
-    stamina: "Макс. выносливость",
-    atc_air: "Урон от атаки в воздухе",
-    atc_special: "Доп. урон от всех особых атак",
-    all_evas: "Все уклонение",
-    all_damage_decrease: "Снижение всего урона",
-    resist_ooz: "Ошеломление/оглушение/заморозка",
-    resist_no: "Нокдаун/опрокидывание",
-    resist_op: "Отталкивание/подбрасывание",
-    black: "Восстановление Гнева Черного духа",
-    mpfpdp: "Макс. MP/FP/DP",
-    jump: "Сила прыжка",
-    live_exp: "Ремесленный опыт",
-    master_exp: "Мастерство ремесла",
-    gath_exp: "Опыт сбора",
-    fish_exp: "Опыт рыбалки",
-    hunt_exp: "Опыт охоты",
-    meal_exp: "Опыт кулинарии",
-    alch_exp: "Опыт алхимии",
-    make_exp: "Опыт изготовления",
-    horse_exp: "Опыт укрощения",
-    trade_exp: "Опыт торговли",
-    garden_exp: "Опыт урожая",
-    ship_exp: "Опыт судоходства",
-    barter_exp: "Опыт бартера",
-    m_gath: "Мастерство сбора",
-    m_fish: "Мастерство рыбалки",
-    m_hunt: "Мастерство охоты",
-    m_meal: "Мастерство кулинарии",
-    m_alch: "Мастерство алхимии",
-    m_make: "Мастерство изготовления",
-    m_horse: "Мастерство укрощения",
-    m_ship: "Мастерство судоходства",
-    gath_rate: "Шанс получения предметов при сборе",
-    gath_speed: "Скорость сбора",
-    energy: "Восстановление энергии",
-    fish_auto: "Время авторыбалки",
-    fish_speed: "Скорость рыбалки",
-    fish_big: "Шанс поймать крупную рыбу",
-    fish_rare: "Шанс поймать редкую рыбу",
-    perk_speed: "Скорость навыков",
-    crit_rate: "Шанс крит. удара",
-    atc_speed: "Скорость атаки",
-    crit_plus: "Крит. удар",
-    gun_reload: "Скорость перезарядки ружья",
-    meal_time: "Время кулинарии",
-    alch_time: "Время алхимии",
-    make_rate: "Шанс успешного изготовления",
-    mount_exp: "Опыт транспорта",
-    mermaid: "Желание русалки III"
-  };
+	const TAG_LABELS = {
+		exp: "Боевой опыт",
+		pexp: "Опыт навыков",
+		atc_monster: "Доп. урон монстрам",
+		atc_human: "Доп. урон люди",
+		atc_ain: "Доп. урон аины",
+		atc_kama: "Доп. урон по Камасильвии",
+		atc_idan: "Доп. атака по Идании",
+		atc_decrease_monster: "Урон от монстров",
+		damage_decrease_monster: "Снижение урона от монстров",
+		hp_max: "Макс. HP",
+		atc_ground: "Урон от атаки по низу",
+		atc_crit: "Урон крит. удара",
+		atc_back: "Урон от атак в спину",
+		def_all: "Все сопротивление",
+		atc_all: "Вся атака",
+		luck: "Шанс получения трофеев",
+		speed: "Скорость передвижения",
+		mass: "Макс. вес",
+		cloth: "Прочность снаряжения",
+		karma: "Восстановление кармы",
+		know: "Шанс знаний",
+		know_high: "Шанс высоких знаний",
+		fall_damage: "Урон от падения",
+		all_accu: "Вся меткость",
+		stamina: "Макс. выносливость",
+		atc_air: "Урон от атаки в воздухе",
+		atc_special: "Доп. урон особых атак",
+		all_evas: "Все уклонение",
+		all_damage_decrease: "Снижение всего урона",
+		resist_ooz: "Ошеломление/оглушение/заморозка",
+		resist_no: "Нокдаун/опрокидывание",
+		resist_op: "Отталкивание/подбрасывание",
+		black: "Восстановление Гнева Черного духа",
+		mpfpdp: "Макс. MP/FP/DP",
+		jump: "Сила прыжка",
+		live_exp: "Ремесленный опыт",
+		master_exp: "Мастерство ремесла",
+		gath_exp: "Опыт сбора",
+		fish_exp: "Опыт рыбалки",
+		hunt_exp: "Опыт охоты",
+		meal_exp: "Опыт кулинарии",
+		alch_exp: "Опыт алхимии",
+		make_exp: "Опыт изготовления",
+		horse_exp: "Опыт укрощения",
+		trade_exp: "Опыт торговли",
+		garden_exp: "Опыт урожая",
+		ship_exp: "Опыт судоходства",
+		barter_exp: "Опыт бартера",
+		m_gath: "Мастерство сбора",
+		m_fish: "Мастерство рыбалки",
+		m_hunt: "Мастерство охоты",
+		m_meal: "Мастерство кулинарии",
+		m_alch: "Мастерство алхимии",
+		m_make: "Мастерство изготовления",
+		m_horse: "Мастерство укрощения",
+		m_ship: "Мастерство судоходства",
+		gath_rate: "Шанс предметов при сборе",
+		gath_speed: "Скорость сбора",
+		energy: "Восстановление энергии",
+		fish_auto: "Время авторыбалки",
+		fish_speed: "Скорость рыбалки",
+		fish_big: "Шанс крупной рыбы",
+		fish_rare: "Шанс редкой рыбы",
+		perk_speed: "Скорость навыков",
+		crit_rate: "Шанс крит. удара",
+		atc_speed: "Скорость атаки",
+		crit_plus: "Крит. удар",
+		gun_reload: "Скорость перезарядки ружья",
+		meal_time: "Время кулинарии",
+		alch_time: "Время алхимии",
+		make_rate: "Шанс изготовления",
+		mount_exp: "Опыт транспорта",
+		mermaid: "Желание русалки III"
+	};
 
-  const TAG_COLOR = {
-    pexp:"red",
-    exp:"red",
-    atc_all: "red",
-    atc_monster: "red",
-    atc_human: "red",
-    atc_ain: "red",
-    atc_kama: "red",
-    atc_idan: "red",
-    atc_ground: "red",
-    atc_air: "red",
-    atc_back: "red",
-    atc_crit: "red",
-    atc_special: "red",
-    crit_rate: "red",
-    crit_plus: "red",
-    atc_speed: "red",
-    all_accu: "red",
+	const TAG_COLOR = {
+		pexp:"red",
+		exp:"red",
+		atc_all: "red",
+		atc_monster: "red",
+		atc_human: "red",
+		atc_ain: "red",
+		atc_kama: "red",
+		atc_idan: "red",
+		atc_ground: "red",
+		atc_air: "red",
+		atc_back: "red",
+		atc_crit: "red",
+		atc_special: "red",
+		crit_rate: "red",
+		crit_plus: "red",
+		atc_speed: "red",
+		all_accu: "red",
 
-    mpfpdp:"blue",
-    def_all: "blue",
-    all_evas: "blue",
-    all_damage_decrease: "blue",
-    damage_decrease_monster: "blue",
-    atc_decrease_monster: "blue",
-    resist_ooz: "blue",
-    resist_no: "blue",
-    resist_op: "blue",
-    hp_max: "blue",
-    stamina: "blue",
+		mpfpdp:"blue",
+		def_all: "blue",
+		all_evas: "blue",
+		all_damage_decrease: "blue",
+		damage_decrease_monster: "blue",
+		atc_decrease_monster: "blue",
+		resist_ooz: "blue",
+		resist_no: "blue",
+		resist_op: "blue",
+		hp_max: "blue",
+		stamina: "blue",
 
-    live_exp:"green",
-    horse_exp:"green",
-    mount_exp:"green",
-    master_exp:"green",
-    gath_exp: "green",
-    fish_exp: "green",
-    hunt_exp: "green",
-    meal_exp: "green",
-    alch_exp: "green",
-    make_exp: "green",
-    trade_exp: "green",
-    garden_exp: "green",
-    ship_exp: "green",
-    barter_exp: "green",
-    m_gath: "green",
-    m_fish: "green",
-    m_hunt: "green",
-    m_meal: "green",
-    m_alch: "green",
-    m_make: "green",
-    m_horse: "green",
-    m_ship: "green",
-    gath_rate: "green",
-    gath_speed: "green",
-    fish_auto: "green",
-    fish_speed: "green",
-    fish_big: "green",
-    fish_rare: "green",
-    meal_time: "green",
-    alch_time: "green",
-    make_rate: "green",
-  };
+		live_exp:"green",
+		horse_exp:"green",
+		mount_exp:"green",
+		master_exp:"green",
+		gath_exp: "green",
+		fish_exp: "green",
+		hunt_exp: "green",
+		meal_exp: "green",
+		alch_exp: "green",
+		make_exp: "green",
+		trade_exp: "green",
+		garden_exp: "green",
+		ship_exp: "green",
+		barter_exp: "green",
+		m_gath: "green",
+		m_fish: "green",
+		m_hunt: "green",
+		m_meal: "green",
+		m_alch: "green",
+		m_make: "green",
+		m_horse: "green",
+		m_ship: "green",
+		gath_rate: "green",
+		gath_speed: "green",
+		fish_auto: "green",
+		fish_speed: "green",
+		fish_big: "green",
+		fish_rare: "green",
+		meal_time: "green",
+		alch_time: "green",
+		make_rate: "green",
+	};
 
-  const TAG_LAYOUT = {
-    red: [
-      "exp","pexp","atc_all","all_accu","all_evas","perk_speed","atc_speed","crit_plus","crit_rate",
-      "atc_ground","atc_crit","atc_back","atc_air","atc_special","atc_monster","atc_human","atc_ain","atc_kama","atc_idan"
-    ],
-    blue: [
-      "atc_decrease_monster","damage_decrease_monster","def_all","all_damage_decrease","hp_max","mpfpdp","stamina",
-      "resist_ooz","resist_no","resist_op"
-    ],
-    green: [
-      "live_exp","master_exp","gath_exp","fish_exp","hunt_exp","meal_exp","alch_exp","make_exp","horse_exp","garden_exp",
-      "mount_exp","trade_exp","ship_exp","barter_exp","m_gath","m_fish","m_hunt","m_meal","m_alch","m_make","m_horse","m_ship",
-      "gath_speed","fish_speed","fish_auto","meal_time","alch_time","make_rate"
-    ],
-    white: [
-      "fall_damage","energy","mass","speed","know","mermaid","know_high","black","luck","gath_rate","fish_big","karma",
-      "jump","fish_rare","gun_reload","cloth"
-    ]
-  };
+	const TAG_LAYOUT = {
+		red: [
+			"exp","pexp","atc_all","all_accu","all_evas","perk_speed","atc_speed","crit_plus","crit_rate",
+			"atc_ground","atc_crit","atc_back","atc_air","atc_special","atc_monster","atc_human","atc_ain","atc_kama","atc_idan"
+		],
+		blue: [
+			"atc_decrease_monster","damage_decrease_monster","def_all","all_damage_decrease","hp_max","mpfpdp","stamina",
+			"resist_ooz","resist_no","resist_op"
+		],
+		green: [
+			"live_exp","master_exp","gath_exp","fish_exp","hunt_exp","meal_exp","alch_exp","make_exp","horse_exp","garden_exp",
+			"mount_exp","trade_exp","ship_exp","barter_exp","m_gath","m_fish","m_hunt","m_meal","m_alch","m_make","m_horse","m_ship",
+			"gath_speed","fish_speed","fish_auto","meal_time","alch_time","make_rate"
+		],
+		white: [
+			"fall_damage","energy","mass","speed","know","mermaid","know_high","black","luck","gath_rate","fish_big","karma",
+			"jump","fish_rare","gun_reload","cloth"
+		]
+	};
 
-  const GROUP_TITLES = {
-    red: "Бой",
-    blue: "Сопротивление",
-    green: "Ремесло",
-    white: "Остальное"
-  };
+	const GROUP_TITLES = {
+		red: "Бой",
+		blue: "Сопротивление",
+		green: "Ремесло",
+		white: "Остальное"
+	};
 
-  const $tags = document.getElementById("tags");
-  const $cards = document.getElementById("cards");
-  const $q = document.getElementById("q");
-  const $reset = document.getElementById("reset");
+    const EFFECT_ICONS = {
+        all_accu: "./img/atc_all.png",
+        all_damage_decrease: "./img/atc_min.png",
+        all_evas: "./img/atc_all.png",
 
-  function uniqTags(items) {
-    const s = new Set();
-    for (const it of items) {
-      if (Array.isArray(it.tag)) for (const t of it.tag) s.add(t);
+        atc_all: "./img/atc_all.png",
+        atc_air: "./img/atc_all.png",
+        atc_ain: "./img/atc_all.png",
+        atc_back: "./img/atc_all.png",
+        atc_crit: "./img/atc_all.png",
+        atc_decrease_monster: "./img/atc_min.png",
+        atc_ground: "./img/atc_all.png",
+        atc_human: "./img/atc_all.png",
+        atc_idan: "./img/idan.svg",
+        atc_kama: "./img/kama.svg",
+        atc_monster: "./img/atc_all.png",
+        atc_special: "./img/atc_all.png",
+        atc_speed: "./img/m.png",
+
+        barter_exp: "./img/barter.png",
+        black: "./img/ds.png",
+        cloth: "./img/cloth.png",
+
+        crit_plus: "./img/atc_all.png",
+        crit_rate: "./img/atc_all.png",
+
+        damage_decrease_monster: "./img/atc_min.png",
+        def_all: "./img/def_all.png",
+        energy: "./img/energy.png",
+
+        exp: "./img/xp.svg",
+        pexp: "./img/pexp.png",
+
+        fall_damage: "./img/speed.png",
+
+        fish_auto: "./img/autofish.png",
+        fish_big: "./img/fish_big.png",
+        fish_exp: "./img/fish_exp.png",
+        fish_rare: "./img/fish_rare.png",
+        fish_speed: "./img/m.png",
+
+        gath_exp: "./img/gath_exp.png",
+        gath_rate: "./img/gath_rate.png",
+        gath_speed: "./img/m.png",
+
+        alch_exp: "./img/alch_exp.png",
+        alch_time: "./img/alch_time.png",
+
+        garden_exp: "./img/garden_exp.png",
+
+        gun_reload: "./img/hunt_time.png",
+        hp_max: "./img/hp.png",
+
+        horse_exp: "./img/horse_exp.png",
+
+        hunt_exp: "./img/hunt_exp.png",
+
+        jump: "./img/speed.png",
+        karma: "./img/karma.png",
+
+        know: "./img/know.png",
+        know_high: "./img/know_high.png",
+
+        live_exp: "./img/live_exp.png",
+
+        luck: "./img/luck_.png",
+
+        m_alch: "./img/alch_m.png",
+        m_fish: "./img/fish_m.png",
+        m_gath: "./img/gath_m.png",
+        m_horse: "./img/horse_m.png",
+        m_hunt: "./img/hunt_m.png",
+        m_make: "./img/make_m.png",
+        m_meal: "./img/meal_m.png",
+        m_ship: "./img/ship_m.png",
+
+        make_exp: "./img/make_exp.png",
+        make_rate: "./img/make_exp.png",
+
+        mass: "./img/lt.png",
+        master_exp: "./img/live_m.png",
+
+        meal_exp: "./img/meal_exp.png",
+        meal_time: "./img/meal_time.png",
+
+        mermaid: "./img/ship_exp.png",
+        mount_exp: "./img/mount_exp.png",
+
+        mpfpdp: "./img/hp.png",
+
+        perk_speed: "./img/m.png",
+
+        resist_no: "./img/def_all.png",
+        resist_ooz: "./img/def_all.png",
+        resist_op: "./img/def_all.png",
+
+        ship_exp: "./img/ship_exp.png",
+
+        speed: "./img/speed.png",
+        stamina: "./img/speed.png",
+
+        trade_exp: "./img/trade_exp.png"
+    };
+
+    const TAG_ICONS = {
+        all_accu: "./img/atc_all.png",
+        all_damage_decrease: "./img/atc_min.png",
+        all_evas: "./img/atc_all.png",
+
+        atc_all: "./img/atc_all.png",
+        atc_air: "./img/atc_all.png",
+        atc_ain: "./img/atc_all.png",
+        atc_back: "./img/atc_all.png",
+        atc_crit: "./img/atc_all.png",
+        atc_decrease_monster: "./img/atc_min.png",
+        atc_ground: "./img/atc_all.png",
+        atc_human: "./img/atc_all.png",
+        atc_idan: "./img/idan.svg",
+        atc_kama: "./img/kama.svg",
+        atc_monster: "./img/atc_all.png",
+        atc_special: "./img/atc_all.png",
+        atc_speed: "./img/m.png",
+
+        barter_exp: "./img/barter.png",
+        black: "./img/ds.png",
+        cloth: "./img/cloth.png",
+
+        crit_plus: "./img/atc_all.png",
+        crit_rate: "./img/atc_all.png",
+
+        damage_decrease_monster: "./img/atc_min.png",
+        def_all: "./img/def_all.png",
+        energy: "./img/energy.png",
+
+        exp: "./img/xp.svg",
+        pexp: "./img/pexp.png",
+
+        fall_damage: "./img/speed.png",
+
+        fish_auto: "./img/autofish.png",
+        fish_big: "./img/fish_big.png",
+        fish_exp: "./img/fish_exp.png",
+        fish_rare: "./img/fish_rare.png",
+        fish_speed: "./img/m.png",
+
+        gath_exp: "./img/gath_exp.png",
+        gath_rate: "./img/gath_rate.png",
+        gath_speed: "./img/m.png",
+
+        alch_exp: "./img/alch_exp.png",
+        alch_time: "./img/alch_time.png",
+
+        garden_exp: "./img/garden_exp.png",
+
+        gun_reload: "./img/hunt_time.png",
+        hp_max: "./img/hp.png",
+
+        horse_exp: "./img/horse_exp.png",
+
+        hunt_exp: "./img/hunt_exp.png",
+
+        jump: "./img/speed.png",
+        karma: "./img/karma.png",
+
+        know: "./img/know.png",
+        know_high: "./img/know_high.png",
+
+        live_exp: "./img/live_exp.png",
+
+        luck: "./img/luck_.png",
+
+        m_alch: "./img/alch_m.png",
+        m_fish: "./img/fish_m.png",
+        m_gath: "./img/gath_m.png",
+        m_horse: "./img/horse_m.png",
+        m_hunt: "./img/hunt_m.png",
+        m_make: "./img/make_m.png",
+        m_meal: "./img/meal_m.png",
+        m_ship: "./img/ship_m.png",
+
+        make_exp: "./img/make_exp.png",
+        make_rate: "./img/make_exp.png",
+
+        mass: "./img/lt.png",
+        master_exp: "./img/live_m.png",
+
+        meal_exp: "./img/meal_exp.png",
+        meal_time: "./img/meal_time.png",
+
+        mermaid: "./img/ship_exp.png",
+        mount_exp: "./img/mount_exp.png",
+
+        mpfpdp: "./img/hp.png",
+
+        perk_speed: "./img/m.png",
+
+        resist_no: "./img/def_all.png",
+        resist_ooz: "./img/def_all.png",
+        resist_op: "./img/def_all.png",
+
+        ship_exp: "./img/ship_exp.png",
+
+        speed: "./img/speed.png",
+        stamina: "./img/speed.png",
+
+        trade_exp: "./img/trade_exp.png"
+    };
+
+    const EFFECT_ICON_FALLBACK = "./icons/placeholder.png";
+
+	const $tags = document.getElementById("tags");
+	const $cards = document.getElementById("cards");
+	const $q = document.getElementById("q");
+	const $reset = document.getElementById("reset");
+
+	function uniqTags(items) {
+		const s = new Set();
+		for (const it of items) {
+			if (Array.isArray(it.tag)) for (const t of it.tag) s.add(t);
+		}
+		return Array.from(s).sort();
+	}
+
+	function renderTags(allTags) {
+		$tags.innerHTML = "";
+
+		const order = ["red", "blue", "green", "white"];
+		const buckets = { red: [], blue: [], green: [], white: [] };
+
+		for (const tag of allTags) {
+			const color = TAG_COLOR[tag] || "white";
+			buckets[color].push(tag);
+		}
+
+		for (const color of order) {
+			const list = (TAG_LAYOUT && TAG_LAYOUT[color] && TAG_LAYOUT[color].length)
+				? TAG_LAYOUT[color]
+				: buckets[color];
+
+			const present = list.filter(t => allTags.indexOf(t) !== -1);
+			if (!present.length) continue;
+
+			const details = document.createElement("details");
+			details.className = "tag-section";
+			details.dataset.group = color;
+			details.open = state.openGroups ? state.openGroups.has(color) : true;
+
+			details.addEventListener("toggle", () => {
+				if (!state.openGroups) state.openGroups = new Set();
+				if (details.open) state.openGroups.add(color);
+				else state.openGroups.delete(color);
+				saveStateToURL();
+			});
+
+			const summary = document.createElement("summary");
+			summary.textContent = GROUP_TITLES[color] || color;
+
+			const btnWrap = document.createElement("div");
+			btnWrap.className = "tag-buttons";
+
+			for (const tag of present) {
+				const btn = document.createElement("button");
+				btn.className = "tag " + color;
+				btn.dataset.tag = tag;
+				const icon = document.createElement("span");
+                icon.className = "tag-icon";
+
+                const url = TAG_ICONS[tag];
+                if (url)
+                    icon.style.backgroundImage = `url(${url})`;
+                else
+                    icon.style.backgroundColor = "#666"; // placeholder
+
+                const text = document.createElement("span");
+                text.textContent = TAG_LABELS[tag] || tag;
+
+                btn.appendChild(icon);
+                btn.appendChild(text);
+
+
+				btn.addEventListener("click", (ev) => {
+					ev.preventDefault();   
+					ev.stopPropagation();
+
+					if (state.selected.has(tag)) state.selected.delete(tag);
+					else state.selected.add(tag);
+
+					render();
+				});
+
+				btnWrap.appendChild(btn);
+			}
+
+			details.appendChild(summary);
+			details.appendChild(btnWrap);
+			$tags.appendChild(details);
+		}
+	}
+
+	function matchQuery(item, q) {
+        if (!q) return true;
+
+        const hay = [
+            item.name || "",
+            ...(item.effects || [])
+        ].join(" ").toLowerCase();
+
+        return hay.includes(q.toLowerCase());
     }
-    return Array.from(s).sort();
-  }
 
-  function renderTags(allTags) {
-    $tags.innerHTML = "";
+	function matchTags(item) {
+		const sel = state.selected;
+		if (sel.size === 0) return true;
 
-    const order = ["red", "blue", "green", "white"];
-    const buckets = { red: [], blue: [], green: [], white: [] };
+		const tags = item.tag || [];
+		if (state.mode === "or") {
+			for (const t of sel) if (tags.includes(t)) return true;
+			return false;
+		} else {
+			for (const t of sel) if (!tags.includes(t)) return false;
+			return true;
+		}
+	}
 
-    for (const tag of allTags) {
-      const color = TAG_COLOR[tag] || "white";
-      buckets[color].push(tag);
-    }
+	function filteredItems() {
+        const out = [];
+        const hasQ = !!state.query;
+        const hasTags = state.selected.size > 0;
 
-    for (const color of order) {
-      const list = (TAG_LAYOUT && TAG_LAYOUT[color] && TAG_LAYOUT[color].length)
-        ? TAG_LAYOUT[color]
-        : buckets[color];
+        for (const it of state.items) {
+            const qOk = matchQuery(it, state.query); // поиск
+            const tOk = matchTags(it);               // теги
 
-      const present = list.filter(t => allTags.indexOf(t) !== -1);
-      if (!present.length) continue;
+            // если включены и поиск, и теги — объединяем через OR
+            if (hasQ && hasTags) {
+            if (!(qOk || tOk)) continue;
+            } else {
+            // иначе обычный AND-режим
+            if (!qOk) continue;
+            if (!tOk) continue;
+            }
 
-      const details = document.createElement("details");
-      details.className = "tag-section";
-      details.dataset.group = color;
-      details.open = state.openGroups ? state.openGroups.has(color) : true;
-
-      details.addEventListener("toggle", () => {
-        if (!state.openGroups) state.openGroups = new Set();
-        if (details.open) state.openGroups.add(color);
-        else state.openGroups.delete(color);
-        saveStateToURL();
-      });
-
-      const summary = document.createElement("summary");
-      summary.textContent = GROUP_TITLES[color] || color;
-
-      const btnWrap = document.createElement("div");
-      btnWrap.className = "tag-buttons";
-
-      for (const tag of present) {
-        const btn = document.createElement("button");
-        btn.className = "tag " + color;
-        btn.dataset.tag = tag;
-        btn.textContent = TAG_LABELS[tag] || tag;
-
-        btn.addEventListener("click", (ev) => {
-          ev.preventDefault();   
-          ev.stopPropagation();
-
-          if (state.selected.has(tag)) state.selected.delete(tag);
-          else state.selected.add(tag);
-
-          render();
-        });
-
-        btnWrap.appendChild(btn);
-      }
-
-      details.appendChild(summary);
-      details.appendChild(btnWrap);
-      $tags.appendChild(details);
-    }
-  }
-
-  function matchQuery(item, q) {
-    if (!q) return true;
-    const hay = [
-      item.name || "",
-      ...(item.effects || []),
-      ...(item.stones || [])
-    ].join(" ").toLowerCase();
-    return hay.includes(q.toLowerCase());
-  }
-
-  function matchTags(item) {
-    const sel = state.selected;
-    if (sel.size === 0) return true;
-
-    const tags = item.tag || [];
-    if (state.mode === "or") {
-      for (const t of sel) if (tags.includes(t)) return true;
-      return false;
-    } else {
-      for (const t of sel) if (!tags.includes(t)) return false;
-      return true;
-    }
-  }
-
-  function filteredItems() {
-    const out = [];
-    for (const it of state.items) {
-      if (!matchQuery(it, state.query)) continue;
-      if (!matchTags(it)) continue;
-      out.push(it);
-    }
-    return out;
-  }
-
-  function getStoneClass(name) {
-    if (name.includes("Ветер")) return "stone-wind";
-    if (name.includes("Огонь")) return "stone-fire";
-    if (name.includes("Земля")) return "stone-earth";
-    if (name.includes("Зелень")) return "stone-green";
-    if (name.includes("Разноцветный")) return "stone-rainbow";
-    return "";
-  }
-
-  function renderCards(items) {
-    $cards.innerHTML = "";
-
-    for (const it of items) {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const card1 = document.createElement("div");
-      card1.className = "card1";
-
-      const card2 = document.createElement("div");
-      card2.className = "card2";
-
-      const title = document.createElement("h3");
-      const name = (it.name || "(без названия)").trim();
-      title.append(name);
-
-      const effList = document.createElement("ul");
-      for (const e of (it.effects || [])) {
-        const li = document.createElement("li");
-        li.textContent = e;
-        effList.appendChild(li);
-      }
-
-      const stonesGrid = document.createElement("div");
-      stonesGrid.className = "stones-grid";
-
-      for (const s of it.stones || []) {
-        const stone = document.createElement("div");
-
-        const colorClass = getStoneClass(s);
-        stone.className = "stone-item " + colorClass;
-
-        const parts = s.split(" ");
-        const first = parts.shift();
-        const bold = document.createElement("b");
-        let text = first;
-
-        if (text === "Разноцветный") text = "Разно<wbr>цветный";
-        bold.innerHTML = text;
-        stone.appendChild(bold);
-
-        const rest = parts.join(" ");
-        let second = rest;
-
-        if (second === "Преобразование") second = "Преобразо&shy;вание";
-        if (second === "Грузоподъемность") second = "Грузоподъ&shy;емность";
-
-        if (second) {
-          stone.appendChild(document.createElement("br"));
-          const span = document.createElement("span");
-          span.innerHTML = second;
-          stone.appendChild(span);
+            out.push(it);
         }
-
-        stonesGrid.appendChild(stone);
-      }
-
-      card.appendChild(card1);
-      card.appendChild(card2);
-
-      card1.appendChild(title);
-      card1.appendChild(effList);
-
-      card2.appendChild(stonesGrid);
-      $cards.appendChild(card);
-    }
-  }
-
-  function syncActiveButtons() {
-    const buttons = $tags.querySelectorAll("button.tag");
-    buttons.forEach(btn => {
-      const t = btn.dataset.tag;
-      btn.classList.toggle("active", state.selected.has(t));
-    });
-  }
-
-  function saveStateToURL() {
-    const params = new URLSearchParams();
-
-    if (state.selected.size) params.set("tags", Array.from(state.selected).join(","));
-    else params.delete("tags");
-
-    if (state.query) params.set("q", state.query);
-    else params.delete("q");
-
-    if (state.openGroups && state.openGroups.size) {
-      params.set("open", Array.from(state.openGroups).join(","));
-    } else {
-      params.delete("open");
+        return out;
     }
 
-    const qs = params.toString();
-    history.replaceState(null, "", location.pathname + (qs ? "?" + qs : ""));
-  }
 
-  function render() {
-    const items = filteredItems();
-    syncActiveButtons();
-    renderCards(items);
-    saveStateToURL();
-  }
+	function getStoneClass(name) {
+		if (name.includes("Ветер")) return "stone-wind";
+		if (name.includes("Огонь")) return "stone-fire";
+		if (name.includes("Земля")) return "stone-earth";
+		if (name.includes("Зелень")) return "stone-green";
+		if (name.includes("Разноцветный")) return "stone-rainbow";
+		return "";
+	}
 
-  async function init() {
-    const res = await fetch("./rocks_tagged.json");
-    state.items = await res.json();
+	function renderCards(items) {
+        $cards.innerHTML = "";
 
-    function loadStateFromURL() {
-      const params = new URLSearchParams(location.search);
+        for (const it of items) {
 
-      const tags = params.get("tags");
-      state.selected.clear();
-      if (tags) {
-        tags.split(",").forEach(t => { if (t) state.selected.add(t); });
-      }
+            const card = document.createElement("div");
+            card.className = "card";
 
-      const q = params.get("q");
-      if (q) {
-        state.query = q;
-        $q.value = q;
-      } else {
-        state.query = "";
-        $q.value = "";
-      }
+            /* ---------- Заголовок (вне flex логики) ---------- */
+            const title = document.createElement("h3");
+            const name = (it.name || "(без названия)").trim();
+            title.textContent = name;
 
-      const open = params.get("open");
-      state.openGroups = new Set(["red","blue","green","white"]);
-      if (open) {
-        state.openGroups.clear();
-        open.split(",").forEach(g => { if (g) state.openGroups.add(g); });
-      }
+            /* ---------- Wrapper под flex ---------- */
+            const body = document.createElement("div");
+            body.className = "card-body";
+
+            /* ---------- Верхняя часть (эффекты) ---------- */
+            const effects = document.createElement("div");
+            effects.className = "effects";
+
+            const effList = document.createElement("ul");
+            const effectsArr = it.effects || [];
+            const tagsArr = it.tag || [];
+
+            for (let i = 0; i < effectsArr.length; i++) {
+                const e = effectsArr[i];
+                const tagKey = tagsArr[i]; // <-- соответствие по индексу
+
+                const li = document.createElement("li");
+                li.className = "effect-item";
+                if (tagKey) li.dataset.tag = tagKey; // удобно для CSS/отладки
+
+                const ico = document.createElement("img");
+                ico.className = "effect-ico";
+                ico.alt = "";
+
+                ico.src = (tagKey && EFFECT_ICONS[tagKey]) ? EFFECT_ICONS[tagKey] : EFFECT_ICON_FALLBACK;
+
+                const txt = document.createElement("span");
+                txt.className = "effect-text";
+
+                // подсветка чисел (+/- и %), с разным цветом для + и -
+                txt.innerHTML = String(e).replace(
+                /([+-]\d+(?:[.,]\d+)?%?)/g,
+                (m) => m[0] === "-"
+                    ? `<span class="effect-value negative">${m}</span>`
+                    : `<span class="effect-value positive">${m}</span>`
+                );
+
+
+                li.appendChild(ico);
+                li.appendChild(txt);
+                effList.appendChild(li);
+            }
+
+
+            effects.appendChild(effList);
+
+            /* ---------- Нижняя часть (камни) ---------- */
+
+            const stonesGrid = document.createElement("div");
+            stonesGrid.className = "stones-grid";
+
+            for (const s of it.stones || []) {
+
+                const stone = document.createElement("div");
+                const colorClass = getStoneClass(s);
+                stone.className = "stone-item " + colorClass;
+
+                const parts = s.split(" ");
+                const first = parts.shift();        // первое слово
+                const rest = parts.join(" ");       // остальное
+
+                /* ---------- первое слово (обычное) ---------- */
+                let text = first;
+
+                if (text === "Разноцветный")
+                    text = "Разно<wbr>цветный";
+
+                const spanFirst = document.createElement("span");
+                spanFirst.innerHTML = text;
+                stone.appendChild(spanFirst);
+
+                /* ---------- остальное (жирное) ---------- */
+                let second = rest;
+
+                if (second === "Преобразование")
+                    second = "Преобразова&shy;ние";
+
+                if (second === "Грузоподъемность")
+                    second = "Грузоподъем&shy;ность";
+
+                if (second) {
+                    stone.appendChild(document.createElement("br"));
+
+                    const bold = document.createElement("b");
+                    bold.innerHTML = second;
+                    stone.appendChild(bold);
+                }
+
+                stonesGrid.appendChild(stone);
+            }
+
+
+            /* ---------- Сборка ---------- */
+            body.appendChild(effects);
+            body.appendChild(stonesGrid);
+
+            card.appendChild(title);
+            card.appendChild(body);
+
+            $cards.appendChild(card);
+        }
     }
 
-    loadStateFromURL();
-    renderTags(uniqTags(state.items));
 
-    $q.addEventListener("input", () => {
-      state.query = $q.value.trim();
-      render();
-    });
+	function syncActiveButtons() {
+		const buttons = $tags.querySelectorAll("button.tag");
+		buttons.forEach(btn => {
+			const t = btn.dataset.tag;
+			btn.classList.toggle("active", state.selected.has(t));
+		});
+	}
 
-    $reset.addEventListener("click", () => {
-      state.selected.clear();
-      state.query = "";
-      $q.value = "";
+	function saveStateToURL() {
+		const params = new URLSearchParams();
 
-      state.openGroups = new Set(["red","blue","green","white"]);
+		if (state.selected.size) params.set("tags", Array.from(state.selected).join(","));
+		else params.delete("tags");
 
-      renderTags(uniqTags(state.items));
-      render();
-    });
+		if (state.query) params.set("q", state.query);
+		else params.delete("q");
 
-    render();
-  }
+		if (state.openGroups && state.openGroups.size) {
+			params.set("open", Array.from(state.openGroups).join(","));
+		} else {
+			params.delete("open");
+		}
 
-  init().catch(err => console.error(err));
+		const qs = params.toString();
+		history.replaceState(null, "", location.pathname + (qs ? "?" + qs : ""));
+	}
+
+	function render() {
+		const items = filteredItems();
+		syncActiveButtons();
+		renderCards(items);
+		saveStateToURL();
+	}
+
+	async function init() {
+		const res = await fetch("./rocks_tagged.json");
+		state.items = await res.json();
+
+		function loadStateFromURL() {
+			const params = new URLSearchParams(location.search);
+
+			const tags = params.get("tags");
+			state.selected.clear();
+			if (tags) {
+				tags.split(",").forEach(t => { if (t) state.selected.add(t); });
+			}
+
+			const q = params.get("q");
+			if (q) {
+				state.query = q;
+				$q.value = q;
+			} else {
+				state.query = "";
+				$q.value = "";
+			}
+
+			const open = params.get("open");
+			state.openGroups = new Set(["red","blue","green","white"]);
+			if (open) {
+				state.openGroups.clear();
+				open.split(",").forEach(g => { if (g) state.openGroups.add(g); });
+			}
+		}
+
+		loadStateFromURL();
+		renderTags(uniqTags(state.items));
+
+		$q.addEventListener("input", () => {
+			state.query = $q.value.trim();
+			render();
+		});
+
+		$reset.addEventListener("click", () => {
+			state.selected.clear();
+			state.query = "";
+			$q.value = "";
+
+			state.openGroups = new Set(["red","blue","green","white"]);
+
+			renderTags(uniqTags(state.items));
+			render();
+		});
+
+		render();
+	}
+
+	init().catch(err => console.error(err));
 })();
 </script>
 </body>
